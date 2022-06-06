@@ -1,0 +1,12 @@
+.wrapper {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper span {
+  font-size: 14px;
+  color: #f8f9fa;
+  margin-left: 5px;
+}

@@ -1,0 +1,21 @@
+.btn {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #f8f9fa;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 20px;
+  background-color: #c1121f;
+  margin-left: 5px;
+}
+
+.btn:hover {
+  color: #03071e;
+}
+
+.btn:active {
+  box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.5);
+  transform: scale(0.9, 0.9);
+}

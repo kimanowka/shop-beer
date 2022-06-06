@@ -1,0 +1,33 @@
+.wrapper {
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fa;
+  border-radius: 33px;
+  box-shadow: 10px 10px 10px #b8b7b7;
+  padding: 20px;
+  transition: all 0.2s;
+}
+.wrapper h4 {
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.wrapper:hover {
+  transform: scale(1.05, 1.05);
+}
+
+.right_side {
+  margin-right: 20px;
+}
+
+.left_side {
+  display: flex;
+  flex-direction: column;
+}
+.left_side a {
+  text-decoration: none;
+  color: inherit;
+}
