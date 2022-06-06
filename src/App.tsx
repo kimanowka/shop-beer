@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "types-axios";
-import { Layout, Modal, ModalError } from "./components";
+import { Layout } from "./components";
 import { Main, CardPage, About, NoMatch, BasketPage } from "./pages/index";
 import styles from "./App.module.css";
 import { Context } from "./Context";
@@ -11,13 +11,10 @@ const urlBeer = `https://api.punkapi.com/v2/beers?per_page=`;
 const urlUser = `https://jsonplaceholder.typicode.com/users`;
 
 export default function App(): JSX.Element {
-  const { setBeers, setUsers, visibleModal } = useContext(Context);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [errorFromServer, setErrorFromServer] = useState<boolean>(false);
-  const [errorStatusFromServer, setErrorStatusFromServer] =
-    useState<string>("");
-  const [countBeersOnPage, setCountBeersOnPage] = useState<number>(9);
-
+  const [countBeersOnPage, setCountBeersOnPage] = useState<number>(6);
+  const { setBeers, setUsers, setErrorFromServer, setErrorStatusFromServer } =
+    useContext(Context);
   useEffect(() => {
     setTimeout(() => {
       axios
@@ -64,28 +61,16 @@ export default function App(): JSX.Element {
     }
   }, [countBeersOnPage, onScroll]);
   return (
-    <>
-      <div className={styles.wrapper}>
-        {visibleModal && <Modal />}
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Main isLoading={isLoading} />} />
-            <Route path="beer/:id" element={<CardPage />} />
-            <Route path="about" element={<About />} />
-            <Route path="basket" element={<BasketPage />} />
-            <Route path="*" element={<NoMatch />} />
-          </Route>
-        </Routes>
-      </div>
-      {errorFromServer && (
-        <ModalError
-          error={errorStatusFromServer}
-          onClick={() => {
-            setErrorFromServer(false);
-          }}
-          handleClose={setErrorFromServer}
-        />
-      )}
-    </>
+    <div className={styles.wrapper}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Main isLoading={isLoading} />} />
+          <Route path="beer/:id" element={<CardPage />} />
+          <Route path="about" element={<About />} />
+          <Route path="basket" element={<BasketPage />} />
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }

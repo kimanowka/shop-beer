@@ -16,6 +16,10 @@ interface ContextProps {
   setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
   addInBasket: (item: number, count: number) => void;
   deleteBeerFromBasket: (item: number) => void;
+  errorFromServer: boolean;
+  setErrorFromServer: React.Dispatch<React.SetStateAction<boolean>>;
+  errorStatusFromServer: string;
+  setErrorStatusFromServer: React.Dispatch<React.SetStateAction<string>>;
 }
 export const Context = React.createContext<ContextProps>({
   beers: [],
@@ -30,6 +34,10 @@ export const Context = React.createContext<ContextProps>({
   visibleModal: false,
   setVisibleModal: () => {},
   deleteBeerFromBasket: () => {},
+  errorFromServer: false,
+  setErrorFromServer: () => {},
+  errorStatusFromServer: "",
+  setErrorStatusFromServer: () => {},
 });
 
 export const ContextProvider = ({ children }: ContextProvidresProps) => {
@@ -38,6 +46,9 @@ export const ContextProvider = ({ children }: ContextProvidresProps) => {
   const [users, setUsers] = useState<users[]>([]);
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
+  const [errorFromServer, setErrorFromServer] = useState<boolean>(false);
+  const [errorStatusFromServer, setErrorStatusFromServer] =
+    useState<string>("");
 
   const addInBasket = useCallback(
     (id: number, count: number) => {
@@ -61,6 +72,10 @@ export const ContextProvider = ({ children }: ContextProvidresProps) => {
   return (
     <Context.Provider
       value={{
+        errorFromServer,
+        setErrorFromServer,
+        errorStatusFromServer,
+        setErrorStatusFromServer,
         beers,
         setBeers,
         users,
