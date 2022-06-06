@@ -1,23 +1,27 @@
 import { Routes, Route } from "react-router-dom";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "types-axios";
 import { Layout, Modal, ModalError } from "./components";
 import { Main, CardPage, About, NoMatch, BasketPage } from "./pages/index";
 import styles from "./App.module.css";
 import { Context } from "./Context";
 import { throttle } from "./helper";
+
+const urlBeer = `https://api.punkapi.com/v2/beers?per_page=`;
+const urlUser = `https://jsonplaceholder.typicode.com/users`;
+
 export default function App(): JSX.Element {
   const { setBeers, setUsers, visibleModal } = useContext(Context);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorFromServer, setErrorFromServer] = useState<boolean>(false);
   const [errorStatusFromServer, setErrorStatusFromServer] =
     useState<string>("");
-  const [countBeersOnPage, setCountBeersOnPage] = useState<number>(6);
+  const [countBeersOnPage, setCountBeersOnPage] = useState<number>(9);
 
   useEffect(() => {
     setTimeout(() => {
       axios
-        .get(`https://api.punkapi.com/v2/beers?per_page=${countBeersOnPage}`)
+        .get(urlBeer + `${countBeersOnPage}`)
         .then(({ data }) => {
           if (data) {
             setBeers(data);
@@ -34,7 +38,7 @@ export default function App(): JSX.Element {
   }, [countBeersOnPage, setBeers]);
 
   useEffect(() => {
-    axios.get("https://jsonplaceholder.typicode.com/users").then(({ data }) => {
+    axios.get(urlUser).then(({ data }) => {
       setUsers(data);
     });
   }, []);
