@@ -15,7 +15,7 @@ interface ContextProps {
   visibleModal: boolean;
   setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
   addInBasket: (item: number, count: number) => void;
-  deleteBeerFromBasket: (item: number) => void;
+  deleteBeerFromBasket: (id: number) => void;
   errorFromServer: boolean;
   setErrorFromServer: React.Dispatch<React.SetStateAction<boolean>>;
   errorStatusFromServer: string;
@@ -44,7 +44,7 @@ export const ContextProvider = ({ children }: ContextProvidresProps) => {
   const [beers, setBeers] = useState<beers[]>([]);
   const [basketBeers, setBasketBeers] = useState<beers[]>([]);
   const [users, setUsers] = useState<users[]>([]);
-  const [isAuth, setIsAuth] = useState<boolean>(true);
+  const [isAuth, setIsAuth] = useState<boolean>(false);
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
   const [errorFromServer, setErrorFromServer] = useState<boolean>(false);
   const [errorStatusFromServer, setErrorStatusFromServer] =

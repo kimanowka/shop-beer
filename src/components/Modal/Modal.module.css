@@ -33,11 +33,7 @@
     opacity: 1;
   }
 }
-.error {
-  margin-top: 10px;
-  font-size: 14px;
-  color: red;
-}
+
 .btn_close {
   border: none;
   border-radius: 5px;

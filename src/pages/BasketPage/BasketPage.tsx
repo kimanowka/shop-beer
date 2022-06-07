@@ -30,9 +30,13 @@ export function BasketPage(): JSX.Element {
                     <span className={styles.text}>{index + 1}.</span>
                     <span className={styles.text}>{item.name}</span>
                     <span className={styles.text}>
-                      {(item.ph * item.count!).toFixed(1)} доллара
+                      {item.ph} доллара за 1 шт.
                     </span>
                     <span className={styles.text}>Кол-во: {item.count}</span>
+
+                    <span className={styles.text}>
+                      Общая сумма: {(item.ph * item.count!).toFixed(1)} долларов
+                    </span>
                     <button
                       type="button"
                       onClick={(e) => {

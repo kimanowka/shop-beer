@@ -17,7 +17,7 @@ export function Main({ isLoading, ...props }: MainProps): JSX.Element {
       <Container>
         <div className={styles.wrapper} {...props}>
           {isLoading
-            ? [...new Array(6)].map((item, index) => {
+            ? [...new Array(6)].map((_, index) => {
                 return <Skeleton key={index}></Skeleton>;
               })
             : beers.map((item) => {

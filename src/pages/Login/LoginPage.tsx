@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../Context";
 import { Button, Input } from "../../components";
-import Error from "../../components/Modal/Error";
+import { Error } from "../../components/index";
 
 export function LoginPage() {
   const { setVisibleModal, users, setIsAuth } = useContext(Context);
@@ -78,6 +78,15 @@ export function LoginPage() {
       setPasswordError("");
     }
   }, [password.length, passwordBlur]);
+  const handleReset = () => {
+    setName("");
+    setNameBlur(false);
+    setNameError("");
+    setPassword("");
+    setPasswordBlur(false);
+    setPasswordError("");
+    setError("");
+  };
   return (
     <div className={styles.wrapper}>
       <div
@@ -110,18 +119,13 @@ export function LoginPage() {
             setPassword(e.currentTarget.value.trim());
           }}
         />
-        {error && <Error />}
+        {error && <Error>неправильное имя или пароль</Error>}
         <div>
           <Button type="button" onClick={handleSignIn}>
             Войти
           </Button>
-          <Button
-            type="button"
-            onClick={() => {
-              setVisibleModal(false);
-            }}
-          >
-            Отменить
+          <Button type="button" onClick={handleReset}>
+            Очистить
           </Button>
         </div>
       </div>

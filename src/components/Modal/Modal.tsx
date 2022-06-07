@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../Context";
 import { Button, Input } from "../index";
-import Error from "./Error";
+import { Error } from "../index";
 import styles from "./Modal.module.css";
 export function Modal(): JSX.Element {
   const { setVisibleModal, users, setIsAuth } = useContext(Context);
@@ -122,7 +122,7 @@ export function Modal(): JSX.Element {
             setPassword(e.currentTarget.value.trim());
           }}
         />
-        {error && <Error />}
+        {error && <Error>неправильное имя или пароль</Error>}
         <div>
           <Button type="button" onClick={handleSignIn}>
             Войти

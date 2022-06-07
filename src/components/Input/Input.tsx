@@ -1,4 +1,5 @@
 import { DetailedHTMLProps } from "react";
+import { Error } from "../index";
 import styles from "./Input.module.css";
 
 interface InputProps
@@ -34,9 +35,7 @@ export function Input({
         className={error ? styles.input_error : styles.input}
         {...props}
       />
-      {error ? (
-        <span style={{ color: "red", fontSize: "12px" }}>{error}</span>
-      ) : null}
+      {error && <Error>{error}</Error>}
     </label>
   );
 }
