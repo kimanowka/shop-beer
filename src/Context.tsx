@@ -44,7 +44,7 @@ export const ContextProvider = ({ children }: ContextProvidresProps) => {
   const [beers, setBeers] = useState<beers[]>([]);
   const [basketBeers, setBasketBeers] = useState<beers[]>([]);
   const [users, setUsers] = useState<users[]>([]);
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [isAuth, setIsAuth] = useState<boolean>(true);
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
   const [errorFromServer, setErrorFromServer] = useState<boolean>(false);
   const [errorStatusFromServer, setErrorStatusFromServer] =
@@ -52,13 +52,27 @@ export const ContextProvider = ({ children }: ContextProvidresProps) => {
 
   const addInBasket = useCallback(
     (id: number, count: number) => {
-      const newBeerArray = [];
-      const newBeer = beers[id - 1];
+      const newBeer: beers = beers[id - 1];
 
-      for (let i = 0; i < count; i++) {
-        newBeerArray.push(newBeer);
+      const itemIndex = basketBeers.findIndex(
+        (value) => value.id === newBeer.id
+      );
+
+      if (itemIndex < 0) {
+        const newItem = {
+          ...newBeer,
+          count: count,
+        };
+        setBasketBeers([...basketBeers, newItem]);
+      } else {
+        const newItem = {
+          ...basketBeers[itemIndex],
+          count: basketBeers[itemIndex].count! + count,
+        };
+        const newCart = basketBeers.slice();
+        newCart.splice(itemIndex, 1, newItem);
+        setBasketBeers(newCart);
       }
-      setBasketBeers([...newBeerArray, ...basketBeers]);
     },
     [basketBeers, beers]
   );

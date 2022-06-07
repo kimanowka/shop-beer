@@ -8,27 +8,39 @@
 }
 
 .beer_item {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 50px 1fr 150px 150px 150px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-bottom: 1px solid #c1121f;
 }
 
 .text {
+  font-size: 16px;
+  font-weight: bold;
+}
+.price {
+  display: flex;
+  justify-content: flex-end;
   font-size: 24px;
   font-weight: bold;
 }
-
 .btn {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  color: #f8f9fa;
-  padding: 10px;
-  font-size: 14px;
+  color: #03071e;
+  background-color: white;
+  padding: 5px;
+  font-size: 20px;
+  font-weight: bold;
   text-align: center;
-  margin-top: 20px;
-  background-color: #c1121f;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-  color: #03071e;
+  color: #f8f9fa;
+  background-color: #c1121f;
 }

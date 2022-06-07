@@ -8,14 +8,14 @@ export function BasketPage(): JSX.Element {
   useEffect(() => {
     const newPrice = basketBeers
       .reduce((acc: number, item) => {
-        acc = acc + item.ph;
+        acc = acc + item.ph * item.count!;
         return acc;
       }, 0)
       .toFixed(1);
 
     setPrice(Number(newPrice));
   }, [basketBeers]);
-  useEffect(() => {}, []);
+
   return (
     <div className={styles.wrapper}>
       <Container>
@@ -23,12 +23,16 @@ export function BasketPage(): JSX.Element {
           <div className={styles.text}>В вашей корзине нет товаров...</div>
         ) : (
           <div>
-            <div className={styles.basket}>
-              {basketBeers.map((item) => {
+            <div className={styles.basket_content}>
+              {basketBeers.map((item, index) => {
                 return (
                   <div key={item.id} className={styles.beer_item}>
-                    <span>{item.name}</span>
-                    <span>{item.ph} доллара</span>
+                    <span className={styles.text}>{index + 1}.</span>
+                    <span className={styles.text}>{item.name}</span>
+                    <span className={styles.text}>
+                      {(item.ph * item.count!).toFixed(1)} доллара
+                    </span>
+                    <span className={styles.text}>Кол-во: {item.count}</span>
                     <button
                       type="button"
                       onClick={(e) => {
@@ -36,14 +40,13 @@ export function BasketPage(): JSX.Element {
                       }}
                       className={styles.btn}
                     >
-                      Х
+                      Удалить
                     </button>
                   </div>
                 );
               })}
             </div>
-            <hr />
-            Всего: {price} долларов
+            <div className={styles.price}> Всего: {price} долларов</div>
           </div>
         )}
       </Container>

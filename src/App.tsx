@@ -2,10 +2,19 @@ import { Routes, Route } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "types-axios";
 import { Layout } from "./components";
-import { Main, CardPage, About, NoMatch, BasketPage } from "./pages/index";
+import {
+  Main,
+  CardPage,
+  About,
+  NoMatch,
+  BasketPage,
+  AccountPage,
+  LoginPage,
+} from "./pages/index";
 import styles from "./App.module.css";
 import { Context } from "./Context";
 import { throttle } from "./helper";
+import RequireAuth from "./hoc/RequireAuth";
 
 const urlBeer = `https://api.punkapi.com/v2/beers?per_page=`;
 const urlUser = `https://jsonplaceholder.typicode.com/users`;
@@ -67,7 +76,23 @@ export default function App(): JSX.Element {
           <Route index element={<Main isLoading={isLoading} />} />
           <Route path="beer/:id" element={<CardPage />} />
           <Route path="about" element={<About />} />
-          <Route path="basket" element={<BasketPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route
+            path="basket"
+            element={
+              <RequireAuth>
+                <BasketPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="account"
+            element={
+              <RequireAuth>
+                <AccountPage />
+              </RequireAuth>
+            }
+          />
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>

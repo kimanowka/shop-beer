@@ -17,7 +17,7 @@ export function Basket({ ...props }: BasketProps): JSX.Element {
   useEffect(() => {
     const newPrice = basketBeers
       .reduce((acc: number, item) => {
-        acc = acc + item.ph;
+        acc = acc + item.ph * item.count!;
         return acc;
       }, 0)
       .toFixed(1);

@@ -1,6 +1,7 @@
 export interface beers {
   id: number;
   name: string;
+  count?: number;
   tagline: string;
   first_brewed: string;
   description: string;
