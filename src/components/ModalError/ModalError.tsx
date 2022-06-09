@@ -1,4 +1,6 @@
 import { DetailedHTMLProps, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { combineReducersProps } from "../../store/reducers";
 import { Button } from "../index";
 import styles from "./ModalError.module.css";
 
@@ -6,19 +8,15 @@ interface ModalErrorProps
   extends DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLDivElement>,
     HTMLDivElement
-  > {
-  error: string;
-  handleClose: React.Dispatch<React.SetStateAction<boolean>>;
-}
+  > {}
 
-export function ModalError({
-  error,
-  handleClose,
-  ...props
-}: ModalErrorProps): JSX.Element {
+export function ModalError({ ...props }: ModalErrorProps): JSX.Element {
+  const { error } = useSelector((state: combineReducersProps) => state.beers);
+
+  const dispatch = useDispatch();
   useEffect(() => {
     const intervalId = setTimeout(() => {
-      handleClose(false);
+      dispatch({ type: "HIDE_MODAL_ERROR" });
     }, 15000);
 
     return () => {
@@ -28,7 +26,13 @@ export function ModalError({
   return (
     <div className={styles.wrapper} {...props}>
       Упс, возникла ошибка:{error}
-      <Button>Закрыть</Button>
+      <Button
+        onClick={() => {
+          dispatch({ type: "HIDE_MODAL_ERROR" });
+        }}
+      >
+        Закрыть
+      </Button>
     </div>
   );
 }

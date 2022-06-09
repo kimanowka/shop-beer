@@ -5,10 +5,13 @@ import React, {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import { Context } from "../../Context";
 import { beers } from "../../types";
 import { Button } from "../index";
 import styles from "./Card.module.css";
+
 interface CardProps
   extends DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
@@ -17,9 +20,9 @@ interface CardProps
   beer: beers;
 }
 export function Card({ beer, ...props }: CardProps): JSX.Element {
-  const { addInBasket, isAuth, setVisibleModal } = useContext(Context);
+  const { isAuth, setVisibleModal } = useContext(Context);
   const [available, setAvailable] = useState<boolean>(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     beer.id % 2 === 0 ? setAvailable(true) : setAvailable(false);
   }, [beer]);
@@ -42,7 +45,10 @@ export function Card({ beer, ...props }: CardProps): JSX.Element {
             type="button"
             disabled={!available}
             onClick={() => {
-              addInBasket(beer.id, 1);
+              dispatch({
+                type: "BASKET_BEERS_ADD",
+                payload: { item: beer, count: 1 },
+              });
             }}
           >
             {available ? "Добавить в корзину" : "Нет в наличии"}

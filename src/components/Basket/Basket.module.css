@@ -10,3 +10,15 @@
   color: #f8f9fa;
   margin-left: 5px;
 }
+
+@media (max-width: 685px) {
+  .wrapper span {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 530px) {
+  .wrapper {
+    width: 150px;
+  }
+}

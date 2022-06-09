@@ -1,8 +1,11 @@
-import React, { DetailedHTMLProps, useContext } from "react";
+import React, { DetailedHTMLProps } from "react";
+import { useSelector } from "react-redux";
+
+import styles from "./Main.module.css";
 import { Container, Card } from "../../components";
 import Skeleton from "../../components/Skeleton/Skeleton";
-import { Context } from "../../Context";
-import styles from "./Main.module.css";
+import { combineReducersProps } from "../../store/reducers";
+import { beers } from "../../types";
 interface MainProps
   extends DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
@@ -11,16 +14,18 @@ interface MainProps
   isLoading: boolean;
 }
 export function Main({ isLoading, ...props }: MainProps): JSX.Element {
-  const { beers } = useContext(Context);
+  const { beers, loading } = useSelector(
+    (state: combineReducersProps) => state.beers
+  );
   return (
     <>
       <Container>
         <div className={styles.wrapper} {...props}>
-          {isLoading
+          {loading
             ? [...new Array(6)].map((_, index) => {
                 return <Skeleton key={index}></Skeleton>;
               })
-            : beers.map((item) => {
+            : beers.map((item: beers) => {
                 return <Card key={item.id} beer={item}></Card>;
               })}
         </div>

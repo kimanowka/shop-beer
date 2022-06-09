@@ -1,12 +1,15 @@
-import styles from "./LoginPage.module.css";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { Button, Input, Error } from "../../components";
 import { Context } from "../../Context";
-import { Button, Input } from "../../components";
-import { Error } from "../../components/index";
+import { users } from "./../../types";
+import { combineReducersProps } from "../../store/reducers";
+import styles from "./LoginPage.module.css";
 
 export function LoginPage() {
-  const { setVisibleModal, users, setIsAuth } = useContext(Context);
+  const { setVisibleModal, setIsAuth } = useContext(Context);
   const [name, setName] = useState<string>("");
   const [nameBlur, setNameBlur] = useState<boolean>(false);
   const [nameError, setNameError] = useState<string>("");
@@ -15,6 +18,7 @@ export function LoginPage() {
   const [passwordError, setPasswordError] = useState<string>("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { users } = useSelector((state: combineReducersProps) => state.users);
 
   const handleSignIn = () => {
     if (name.length < 1) {
@@ -41,7 +45,7 @@ export function LoginPage() {
     } else {
       allRight = false;
     }
-    const arr = users.filter((item) => {
+    const arr = users.filter((item: users) => {
       return item.username === name && item.address.zipcode === password;
     });
     if (arr.length < 1) {

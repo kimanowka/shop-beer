@@ -40,7 +40,7 @@ export function NavBar(): JSX.Element {
               <NavLink to="/">Главная</NavLink>
             </li>
             <li>
-              <NavLink to="about">О магазине</NavLink>
+              <NavLink to="about">О нас</NavLink>
             </li>
             <li>
               <NavLink to="account">Аккаунт</NavLink>

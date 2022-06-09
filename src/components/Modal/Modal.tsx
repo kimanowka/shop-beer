@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../../Context";
 import { Button, Input } from "../index";
 import { Error } from "../index";
+import { useSelector } from "react-redux";
+
+import { combineReducersProps } from "../../store/reducers";
 import styles from "./Modal.module.css";
+import { users } from "../../types";
 export function Modal(): JSX.Element {
-  const { setVisibleModal, users, setIsAuth } = useContext(Context);
+  const { setVisibleModal, setIsAuth } = useContext(Context);
   const [name, setName] = useState<string>("");
   const [nameBlur, setNameBlur] = useState<boolean>(false);
   const [nameError, setNameError] = useState<string>("");
@@ -14,6 +18,7 @@ export function Modal(): JSX.Element {
   const [passwordError, setPasswordError] = useState<string>("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { users } = useSelector((state: combineReducersProps) => state.users);
 
   const handleSignIn = () => {
     if (name.length < 1) {
@@ -40,7 +45,7 @@ export function Modal(): JSX.Element {
     } else {
       allRight = false;
     }
-    const arr = users.filter((item) => {
+    const arr = users.filter((item: users) => {
       return item.username === name && item.address.zipcode === password;
     });
     if (arr.length < 1) {

@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import axios from "types-axios";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Layout } from "./components";
 import {
   Main,
@@ -12,41 +12,25 @@ import {
   LoginPage,
 } from "./pages/index";
 import styles from "./App.module.css";
-import { Context } from "./Context";
 import { throttle } from "./helper";
 import RequireAuth from "./hoc/RequireAuth";
-
-const urlBeer = `https://api.punkapi.com/v2/beers?per_page=`;
-const urlUser = `https://jsonplaceholder.typicode.com/users`;
+import { fetchBeers } from "./store/reducers/beersReducer";
+import { fetchUser } from "./store/reducers/userReducer";
+import { combineReducersProps } from "./store/reducers";
 
 export default function App(): JSX.Element {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [countBeersOnPage, setCountBeersOnPage] = useState<number>(6);
-  const { setBeers, setUsers, setErrorFromServer, setErrorStatusFromServer } =
-    useContext(Context);
+  const { loading, page } = useSelector(
+    (state: combineReducersProps) => state.beers
+  );
+
+  const dispatch = useDispatch();
   useEffect(() => {
-    setTimeout(() => {
-      axios
-        .get(urlBeer + `${countBeersOnPage}`)
-        .then(({ data }) => {
-          if (data) {
-            setBeers(data);
-            setIsLoading(false);
-          } else {
-            setIsLoading(true);
-          }
-        })
-        .catch((e) => {
-          setErrorFromServer(true);
-          setErrorStatusFromServer(e.response.data.statusCode);
-        });
-    }, 500);
-  }, [countBeersOnPage, setBeers]);
+    dispatch(fetchBeers(page));
+  }, [page]);
 
   useEffect(() => {
-    axios.get(urlUser).then(({ data }) => {
-      setUsers(data);
-    });
+    dispatch({ type: "FETCH_BEERS" });
+    dispatch(fetchUser());
   }, []);
   const onScroll = throttle((e: any) => {
     if (
@@ -54,7 +38,7 @@ export default function App(): JSX.Element {
         (e.target.documentElement.scrollTop + window.innerHeight) <
       100
     ) {
-      setCountBeersOnPage((prev) => prev + 6);
+      dispatch({ type: "SET_BEERS_PAGE" });
     }
   }, 50);
 
@@ -65,15 +49,15 @@ export default function App(): JSX.Element {
     };
   }, [onScroll]);
   useEffect(() => {
-    if (countBeersOnPage >= 78) {
+    if (page >= 78) {
       document.removeEventListener("scroll", onScroll);
     }
-  }, [countBeersOnPage, onScroll]);
+  }, [page, onScroll]);
   return (
     <div className={styles.wrapper}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Main isLoading={isLoading} />} />
+          <Route index element={<Main isLoading={loading} />} />
           <Route path="beer/:id" element={<CardPage />} />
           <Route path="about" element={<About />} />
           <Route path="login" element={<LoginPage />} />

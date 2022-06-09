@@ -1,30 +1,36 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import { Container } from "../../components";
-import { Context } from "../../Context";
+import { combineReducersProps } from "../../store/reducers";
 import styles from "./BasketPage.module.css";
+import { beers } from "../../types";
+
 export function BasketPage(): JSX.Element {
-  const { basketBeers, deleteBeerFromBasket } = useContext(Context);
+  const { BasketBeers } = useSelector(
+    (state: combineReducersProps) => state.basketBeers
+  );
+  const dispatch = useDispatch();
   const [price, setPrice] = useState<number>(0);
+
   useEffect(() => {
-    const newPrice = basketBeers
-      .reduce((acc: number, item) => {
-        acc = acc + item.ph * item.count!;
-        return acc;
-      }, 0)
-      .toFixed(1);
+    const newPrice = BasketBeers.reduce((acc: number, item: beers) => {
+      acc = acc + item.ph * item.count!;
+      return acc;
+    }, 0).toFixed(1);
 
     setPrice(Number(newPrice));
-  }, [basketBeers]);
+  }, [BasketBeers]);
 
   return (
     <div className={styles.wrapper}>
       <Container>
-        {basketBeers.length < 1 ? (
+        {BasketBeers.length < 1 ? (
           <div className={styles.text}>В вашей корзине нет товаров...</div>
         ) : (
           <div>
             <div className={styles.basket_content}>
-              {basketBeers.map((item, index) => {
+              {BasketBeers.map((item: beers, index: number) => {
                 return (
                   <div key={item.id} className={styles.beer_item}>
                     <span className={styles.text}>{index + 1}.</span>
@@ -39,8 +45,11 @@ export function BasketPage(): JSX.Element {
                     </span>
                     <button
                       type="button"
-                      onClick={(e) => {
-                        deleteBeerFromBasket(Number(item.id));
+                      onClick={() => {
+                        dispatch({
+                          type: "BASKET_BEERS_DELETE",
+                          payload: item.id,
+                        });
                       }}
                       className={styles.btn}
                     >

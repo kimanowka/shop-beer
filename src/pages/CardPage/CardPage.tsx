@@ -1,39 +1,33 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "types-axios";
-import { Context } from "../../Context";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Button, Container, Loader } from "../../components/index";
+import { Context } from "../../Context";
+import { fetchBeersCard } from "../../store/reducers/cardBeerReducer";
+import { combineReducersProps } from "../../store/reducers";
 import styles from "./CardPage.module.css";
 
 export function CardPage(): JSX.Element {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [beer, setBeer] = useState<any>({});
-  const { addInBasket, isAuth, setVisibleModal } = useContext(Context);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { isAuth, setVisibleModal } = useContext(Context);
   const [count, setCount] = useState<number>(1);
   const [available, setAvailable] = useState<boolean>(false);
-
+  const dispatch = useDispatch();
+  const { beer, loading } = useSelector(
+    (state: combineReducersProps) => state.cardBeer
+  );
   useEffect(() => {
-    setTimeout(() => {
-      axios.get(`https://api.punkapi.com/v2/beers/${id}`).then((beer) => {
-        if (beer.data) {
-          setBeer(beer.data[0]);
-          setIsLoading(false);
-        } else {
-          setIsLoading(true);
-        }
-      });
-    }, 1500);
+    dispatch(fetchBeersCard(Number(id)));
   }, [id]);
   useEffect(() => {
     beer.id % 2 === 0 ? setAvailable(true) : setAvailable(false);
   }, [beer]);
-
   return (
     <div>
       <Container>
-        {isLoading ? (
+        {loading ? (
           <Loader></Loader>
         ) : (
           <div className={styles.wrapper}>
@@ -74,7 +68,10 @@ export function CardPage(): JSX.Element {
                   type="button"
                   disabled={!available}
                   onClick={() => {
-                    addInBasket(beer.id, count);
+                    dispatch({
+                      type: "BASKET_BEERS_ADD",
+                      payload: { item: beer, count: count },
+                    });
                   }}
                 >
                   {available ? "Добавить в корзину" : "Нет в наличии"}
